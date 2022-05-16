@@ -7,7 +7,8 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.kawaiifoxx.inlinecalculator.services.MyApplicationService"/>
+        <applicationService
+                serviceImplementation="com.github.kawaiifoxx.inlinecalculator.services.MyApplicationService"/>
         <projectService serviceImplementation="com.github.kawaiifoxx.inlinecalculator.services.MyProjectService"/>
     </extensions>
 
@@ -15,4 +16,15 @@
         <listener class="com.github.kawaiifoxx.inlinecalculator.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
+    <actions>
+        <action id="com.github.kawaiifoxx.inlinecalculator.actions.EvaluateExpressionAction"
+                class="com.github.kawaiifoxx.inlinecalculator.actions.EvaluateExpressionAction"
+                text="Evaluate Expression"
+                description="Evaluates expression in current selection and replaces it with the result.">
+            <add-to-group group-id="EditorPopupMenu" anchor="before"
+                          relative-to-action="RefactoringMenu"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt I"/>
+        </action>
+    </actions>
+
 </idea-plugin>
