@@ -8,14 +8,20 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService
-                serviceImplementation="com.github.kawaiifoxx.inlinecalculator.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.kawaiifoxx.inlinecalculator.services.MyProjectService"/>
+                serviceImplementation="com.github.kawaiifoxx.inlinecalculator.services.ExpressionEvaluatorService"/>
+        <applicationService
+                serviceImplementation="com.github.kawaiifoxx.inlinecalculator.services.CustomFunctionService"/>
+        <applicationService
+                serviceImplementation="com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsState"/>
+
+        <notificationGroup id="Inline Calculator errors" displayType="BALLOON"/>
+        <applicationConfigurable
+                parentId="tools"
+                instance="com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsConfigurable"
+                id="com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsConfigurable"
+                displayName="Inline Calculator"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.kawaiifoxx.inlinecalculator.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
     <actions>
         <action id="com.github.kawaiifoxx.inlinecalculator.actions.EvaluateExpressionAction"
                 class="com.github.kawaiifoxx.inlinecalculator.actions.EvaluateExpressionAction"
