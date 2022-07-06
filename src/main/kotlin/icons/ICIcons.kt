@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package com.github.kawaiifoxx.inlinecalculator.domain
+@file:Suppress("unused")
 
-import com.github.kawaiifoxx.inlinecalculator.utils.ICBundle
-import com.udojava.evalex.Expression
-import java.math.BigDecimal
+package icons
 
-class ICExpression(private val expression: Expression, val startsWithNewLine: Boolean) {
-    fun eval(stripTrailingZeroes: Boolean = true): BigDecimal = expression.eval(stripTrailingZeroes) ?: throw IllegalArgumentException(
-        ICBundle.message("ic.error.expression.eval.failed"))
+import com.intellij.openapi.util.IconLoader
+import javax.swing.Icon
+
+object ICIcons {
+    @JvmField
+    val PluginIcon12: Icon = IconLoader.getIcon("/icons/pluginIcon12By12.svg", javaClass)
+
+    @JvmField
+    val PluginIcon13: Icon = IconLoader.getIcon("/icons/pluginIcon13By13.svg", javaClass)
+
+    @JvmField
+    val PluginIcon16: Icon = IconLoader.getIcon("/icons/pluginIcon16By16.svg", javaClass)
 }

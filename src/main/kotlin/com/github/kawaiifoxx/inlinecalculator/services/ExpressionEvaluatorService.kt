@@ -16,9 +16,11 @@
 
 package com.github.kawaiifoxx.inlinecalculator.services
 
+import com.github.kawaiifoxx.inlinecalculator.utils.ICBundle
 import com.github.kawaiifoxx.inlinecalculator.domain.ICExpression
-import com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsState
-import com.intellij.openapi.application.ApplicationManager
+import com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsStateService
+import com.github.kawaiifoxx.inlinecalculator.settings.customfunctions.ICCustomFunctionStateService
+import com.github.kawaiifoxx.inlinecalculator.utils.Constants
 import com.udojava.evalex.Expression
 
 /**
@@ -27,8 +29,7 @@ import com.udojava.evalex.Expression
  * @author shreyansh
  */
 class ExpressionEvaluatorService(
-    private val customFunctionService: CustomFunctionService = ApplicationManager.getApplication()
-        .getService(CustomFunctionService::class.java),
+    private val functionService: ICCustomFunctionStateService = ICCustomFunctionStateService.instance
 ) {
 
     /**
@@ -46,7 +47,11 @@ class ExpressionEvaluatorService(
     private fun convertToString(it: ICExpression) =
         (if (it.startsWithNewLine) getLineSeparator() else "") + it.eval().toPlainString()
 
-    private fun getSplitter(): String = ICSettingsState.instance.splitter
+    private fun getSplitter(): String = ICSettingsStateService.instance.splitter
+
+    private fun getRoundingMode() = ICSettingsStateService.instance.roundingMode
+
+    private fun getPrecision() = ICSettingsStateService.instance.precision
 
     /**
      * Takes in string with possibly multiple expressions and converts it to a list of expressions.
@@ -61,16 +66,29 @@ class ExpressionEvaluatorService(
      *  @param expressionStr The expression string to be converted.
      *  @return The list of expressions.
      */
+    @Suppress("INACCESSIBLE_TYPE")
     private fun convertToExpressions(expressionStr: String): List<ICExpression> {
         return expressionStr.split(getSplitter())
             .filter { it.isNotBlank() }
-            .map {
-                val expression = Expression(it)
-                expression.addFunction(customFunctionService.getFunction("add10"))
+            .map { expStr ->
+                val expression = Expression(expStr)
+                    .setPrecision(getPrecision())
+                    .setRoundingMode(getRoundingMode())
 
-                ICExpression(expression, it.substring(0, 2).contains(getLineSeparator()))
+                expression.expressionTokenizer.asSequence()
+                    .filter { it.type.toString() == Constants.EXPRESSION_EVALUATOR.FUNCTION }
+                    .map { functionService.getCompiledFunctionWithName(it.surface) }
+                    .filterNotNull()
+                    .forEach {
+                        if (it.isStringFunction)
+                            expression.addLazyFunction(it)
+                        else
+                            expression.addFunction(it)
+                    }
+
+                ICExpression(expression, expStr.substring(0, 2).contains(getLineSeparator()))
             }
     }
 
-    private fun getLineSeparator() = "\n"
+    private fun getLineSeparator() = ICBundle.message("ic.line.separator")
 }

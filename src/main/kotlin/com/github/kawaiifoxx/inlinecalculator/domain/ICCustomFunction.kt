@@ -13,17 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.github.kawaiifoxx.inlinecalculator.domain
 
-package com.github.kawaiifoxx.inlinecalculator.customfunctions
-
-import com.udojava.evalex.AbstractFunction
-import java.math.BigDecimal
-
-class AbstractFunctionAdapter(name: String?, numParams: Int, booleanFunction: Boolean, private val myFunctionClass: Class<*>) :
-    AbstractFunction(name, numParams, booleanFunction) {
-    private val myFunctionObject = myFunctionClass.getConstructor().newInstance()
-
-
-    override fun eval(parameters: MutableList<BigDecimal>?): BigDecimal
-         = myFunctionClass.getMethod("eval", MutableList::class.java).invoke(myFunctionObject, parameters) as BigDecimal
-}
+data class ICCustomFunction(var name: String, var code: String, var parameterCount: Int, var isStringFunction: Boolean)

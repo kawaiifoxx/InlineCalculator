@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.github.kawaiifoxx.inlinecalculator.domain.converter
 
-package com.github.kawaiifoxx.inlinecalculator.domain
+import com.github.kawaiifoxx.inlinecalculator.domain.ICCustomFunction
+import com.google.gson.Gson
+import com.intellij.util.xmlb.Converter
 
-import com.github.kawaiifoxx.inlinecalculator.utils.ICBundle
-import com.udojava.evalex.Expression
-import java.math.BigDecimal
+class ICCustomFunctionConverter : Converter<ICCustomFunction>() {
+    private val gson = Gson()
 
-class ICExpression(private val expression: Expression, val startsWithNewLine: Boolean) {
-    fun eval(stripTrailingZeroes: Boolean = true): BigDecimal = expression.eval(stripTrailingZeroes) ?: throw IllegalArgumentException(
-        ICBundle.message("ic.error.expression.eval.failed"))
+    override fun toString(t: ICCustomFunction): String = gson.toJson(t)
+
+    override fun fromString(s: String): ICCustomFunction = gson.fromJson(s, ICCustomFunction::class.java)
 }

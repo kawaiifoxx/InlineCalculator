@@ -27,6 +27,7 @@ repositories {
 // Configure project's dependencies
 dependencies {
     implementation("com.udojava:EvalEx:2.7")
+    implementation("com.google.code.gson:gson:2.9.0")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin

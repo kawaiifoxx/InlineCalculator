@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.kawaiifoxx.inlinecalculator.utility
+@file:Suppress("ClassName")
+
+package com.github.kawaiifoxx.inlinecalculator.utils
+
+import com.intellij.icons.AllIcons
 
 object Constants {
     object UI {
-        const val SETTINGS_ID = "com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsConfigurable"
-        const val EXPRESSION_SPLITTER_LABEL = "Expression Splitter"
-        const val ERROR_NOTIFICATION_GROUP_ID = "Inline Calculator errors"
-        const val DISPLAY_NAME = "Inline Calculator"
+        val IC_CUSTOM_FUNCTIONS_ADD_ICON = AllIcons.General.Add
+        val FUNCTION_NAME_REGEX = "^[a-zA-Z_]\\w*$".toRegex()
+    }
+
+    object EXPRESSION_EVALUATOR {
+        const val FUNCTION = "FUNCTION"
     }
 }

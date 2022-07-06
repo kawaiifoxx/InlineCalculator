@@ -16,8 +16,8 @@
 
 package com.github.kawaiifoxx.inlinecalculator.actions
 
+import com.github.kawaiifoxx.inlinecalculator.utils.ICBundle
 import com.github.kawaiifoxx.inlinecalculator.services.ExpressionEvaluatorService
-import com.github.kawaiifoxx.inlinecalculator.utility.Constants
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
@@ -44,7 +44,7 @@ class EvaluateExpressionAction : AnAction() {
             evaluatorService.evaluate(selectedText)
         } catch (exception: Exception) {
             NotificationGroupManager.getInstance()
-                .getNotificationGroup(Constants.UI.ERROR_NOTIFICATION_GROUP_ID)
+                .getNotificationGroup(ICBundle.message("ic.error.notification.group.id"))
                 .createNotification(exception.message ?: "Unknown error occurred", NotificationType.ERROR)
                 .notify(project)
             return
@@ -74,6 +74,6 @@ class EvaluateExpressionAction : AnAction() {
     }
 
     override fun update(e: AnActionEvent) {
-        super.update(e)
+        e.presentation.isEnabled = e.getData(PlatformDataKeys.CARET)?.selectedText != null
     }
 }

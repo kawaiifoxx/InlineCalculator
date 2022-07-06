@@ -21,6 +21,7 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
+import java.math.RoundingMode
 
 
 /**
@@ -28,21 +29,25 @@ import com.intellij.util.xmlb.XmlSerializerUtil
  *
  * @author shreyansh
  */
-@State(name = "com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsState",
-    storages = [Storage("InlineCalculator.xml")])
-class ICSettingsState : PersistentStateComponent<ICSettingsState> {
+@State(
+    name = "com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsState",
+    storages = [Storage("InlineCalculator.xml")]
+)
+class ICSettingsStateService : PersistentStateComponent<ICSettingsStateService> {
     var splitter: String = ";"
+    var precision: Int = 5
+    var roundingMode: RoundingMode = RoundingMode.HALF_UP
 
     companion object {
-        val instance: ICSettingsState
-            get() = ApplicationManager.getApplication().getService(ICSettingsState::class.java)
+        val instance: ICSettingsStateService
+            get() = ApplicationManager.getApplication().getService(ICSettingsStateService::class.java)
     }
 
-    override fun getState(): ICSettingsState {
+    override fun getState(): ICSettingsStateService {
         return this
     }
 
-    override fun loadState(state: ICSettingsState) {
+    override fun loadState(state: ICSettingsStateService) {
         XmlSerializerUtil.copyBean(state, this)
     }
 }

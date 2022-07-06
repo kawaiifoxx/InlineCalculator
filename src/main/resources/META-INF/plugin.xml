@@ -10,27 +10,47 @@
         <applicationService
                 serviceImplementation="com.github.kawaiifoxx.inlinecalculator.services.ExpressionEvaluatorService"/>
         <applicationService
-                serviceImplementation="com.github.kawaiifoxx.inlinecalculator.services.CustomFunctionService"/>
+                serviceImplementation="com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsStateService"/>
         <applicationService
-                serviceImplementation="com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsState"/>
+                serviceImplementation="com.github.kawaiifoxx.inlinecalculator.settings.customfunctions.ICCustomFunctionStateService"/>
 
         <notificationGroup id="Inline Calculator errors" displayType="BALLOON"/>
+
         <applicationConfigurable
                 parentId="tools"
                 instance="com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsConfigurable"
                 id="com.github.kawaiifoxx.inlinecalculator.settings.ICSettingsConfigurable"
-                displayName="Inline Calculator"/>
+                displayName="Inline Calculator">
+            <configurable
+                    instance="com.github.kawaiifoxx.inlinecalculator.settings.customfunctions.ICCustomFunctionMasterDetailsConfigurable"
+                    id="com.github.kawaiifoxx.inlinecalculator.settings.customfunctions.ICCustomFunctionMasterDetailsConfigurable"
+                    displayName="Custom Function Manager"/>
+        </applicationConfigurable>
     </extensions>
 
     <actions>
-        <action id="com.github.kawaiifoxx.inlinecalculator.actions.EvaluateExpressionAction"
-                class="com.github.kawaiifoxx.inlinecalculator.actions.EvaluateExpressionAction"
-                text="Evaluate Expression"
-                description="Evaluates expression in current selection and replaces it with the result.">
-            <add-to-group group-id="EditorPopupMenu" anchor="before"
-                          relative-to-action="RefactoringMenu"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="alt I"/>
-        </action>
+        <group
+                id="com.github.kawaiifoxx.inlinecalculator.actions.GroupedAction"
+                text="Inline Calculator"
+                description="Contains actions related to inline calculator"
+                popup="true"
+        icon="ICIcons.PluginIcon12">
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>
+            <action id="com.github.kawaiifoxx.inlinecalculator.actions.EvaluateExpressionAction"
+                    class="com.github.kawaiifoxx.inlinecalculator.actions.EvaluateExpressionAction"
+                    text="Evaluate Expression"
+                    description="Evaluates expression in current selection and replaces it with the result."
+                    icon="AllIcons.Debugger.EvaluateExpression">
+                <keyboard-shortcut keymap="$default" first-keystroke="alt I"/>
+            </action>
+            <action id="com.github.kawaiifoxx.inlinecalculator.actions.ShowICCustomFunctionPopup"
+                    class="com.github.kawaiifoxx.inlinecalculator.actions.ShowICCustomFunctionPopup"
+                    text="Custom Function Lookup"
+                    description="Show custom inline calculator functions"
+                    icon="AllIcons.Actions.Edit">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt I"/>
+            </action>
+        </group>
     </actions>
 
 </idea-plugin>
